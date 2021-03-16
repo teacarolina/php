@@ -1,0 +1,5 @@
+Vi håller på och skapar en API där vi kan utbyta information
+"Punkterna" där vi utbyter information kallas för endpoints
+Vi har samlat alla endpoints som har med användare att göra i mappen "users"
+För att göra det lättare för oss att hantera koden och att förenkla informationsutbytet så har 
+vi gjort klasser/objekt
