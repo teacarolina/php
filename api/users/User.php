@@ -51,5 +51,32 @@ class User {
             die();
         }
     }
+
+    function GetAllUsers() {
+        $sql = "SELECT username FROM users";
+        $statement = $this->database_connection->prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll();
+    }
+
+    function GetUser($user_id) {
+        $sql = "SELECT username FROM users WHERE id=:user_id_IN";
+        $statement = $this->database_connection->prepare($sql);
+        $statement->bindParam(":user_id_IN", $user_id);
+        if(!$statement->execute() || $statement->rowCount() < 1){
+            $error = new stdClass();
+            $error->message = "User does not exist";
+            $error->code = "0003";
+            print_r(json_encode($error));
+            die();
+        }
+    
+
+        $row = $statement->fetch();
+
+        $this->username = $row['username'];
+
+        return $row;
+    }
 }
 ?>
