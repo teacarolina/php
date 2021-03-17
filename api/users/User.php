@@ -107,6 +107,7 @@ class User {
         if(!empty($password)) {
             $error->message = $this->UpdatePassword($id, $password);
         }
+        $error->message = "Updated user with id $id";
         return $error;
     }
 
