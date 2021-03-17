@@ -78,5 +78,60 @@ class User {
 
         return $row;
     }
+
+    function DeleteUser($user_id) {
+        $sql = "DELETE FROM users WHERE id=:user_id_IN";
+        $statement = $this->database_connection->prepare($sql);
+        $statement->bindParam(":user_id_IN", $user_id);
+        $statement->execute();
+
+                    //ett sätt att skriva  
+        $message = new stdClass();
+        if($statement->rowCount() > 0){
+            $message->text = "User with id $user_id removed";
+            return $message;
+        }
+
+        $message->text = "No user with id $user_id was found";
+        return $message;
+    }
+                            //tar det tomma värdet om man inte skickar in ett värde
+    function UpdateUser($id, $username = "", $password = "") {
+        //kolla om det funkar: $echo "$id, $username $password"; 
+        $error = new stdClass();
+        //kallar på funktionerna i funktionen för att uppdatera samtliga samtidigt 
+        if(!empty($username)) {
+            $error->message = $this->UpdateUsername($id, $username);
+        }
+            //kollar vilket värde variablen har 
+        if(!empty($password)) {
+            $error->message = $this->UpdatePassword($id, $password);
+        }
+        return $error;
+    }
+
+    function UpdateUsername($id, $username) {
+        $sql = "UPDATE users SET username=:username_IN WHERE id=:user_id_IN";
+        $statement = $this->database_connection->prepare($sql);
+        $statement->bindParam(":username_IN", $username);
+        $statement->bindParam(":user_id_IN", $id);
+        $statement->execute();
+
+        if($statement->rowCount() < 1) {
+            return "No user with id=$id was found"; 
+        }
+    }
+
+    function UpdatePassword($id, $password) {
+        $sql = "UPDATE users SET password=:password_IN WHERE id=:user_id_IN";
+        $statement = $this->database_connection->prepare($sql);
+        $statement->bindParam(":password_IN", $username);
+        $statement->bindParam(":user_id_IN", $id);
+        $statement->execute();
+
+        if($statement->rowCount() < 1) {
+            return "No user with id=$id was found"; 
+        }
+    }
 }
 ?>
