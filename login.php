@@ -41,6 +41,6 @@ if(isset($action) && $action == "access") {
     <input type="password" placeholder="Password" name="password"><br>
     <input type="submit" value="Login">
     </form>
-    <p>No account yet? <a href="login.php">Register here</a></p>
+    <p>No account yet? <a href="signup.php">Register here</a></p>
 </body>
 </html>
