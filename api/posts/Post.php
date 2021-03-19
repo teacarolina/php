@@ -98,6 +98,8 @@ class Post {
         return $memo;
     }
 
+    //vi hade kunnat sätta private på Update funktionerna så dem inte ska kommas åt utanför klassen utan enbart
+    //i vår klass, vi har ju redan satt funktionerna i den gemensamma funktionen ovanför 
     function UpdateUserName($entries_id, $user_name) {
         $sql = "UPDATE entries SET name=:user_name_IN WHERE id=:entries_id_IN";
         $statement = $this->database_connection->prepare($sql);
@@ -132,6 +134,15 @@ class Post {
         if($statement->rowCount() < 1) {
             return "No message with id=$entries_id was found";
         }
+    }
+
+    function SearchPost($keyword) {
+        $sql = "SELECT id, name, email, message FROM entries WHERE name LIKE :keyword_IN OR message LIKE :keyword_IN";
+        $statement = $this->database_connection->prepare($sql);
+        $keyword = '%'. $keyword .'%';
+        $statement->bindParam(":keyword_IN", $keyword);
+        $statement->execute();
+        return json_encode($statement->fetchAll());
     }
 }
 ?>
